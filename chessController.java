@@ -91,14 +91,14 @@ public class chessController {
 			return false;
 		}
 		if(ToRow != FromRow) { // check if rook is moving left on rows
-			if(FromRow < ToRow) { // BLACK ROOK INCREASING ROW
+			if(FromRow < ToRow) { // ROOK INCREASING ROW
 				for(int i = FromRow+1; i < ToRow+1; i++) { //loop through and check if any pieces are in the way of rooks path 
 					System.out.println(theGameBoard[i-1][FromColumn-1] + " Is in the way at " +FromColumn + " " +i);
 					if(theGameBoard[i-1][FromColumn-1] != "" ) {
 						return false;
 					}
 				}	
-    		}else { // BLACK ROOK DECREASING ROW
+    		}else { // ROOK DECREASING ROW
     			for(int i = FromRow-1; i > ToRow-1; i--) { //loop through and check if any pieces are in the way of rooks path 
 					System.out.println(theGameBoard[i-1][FromColumn-1] + " Is in the way at " +FromColumn + " " +i);
 					if(theGameBoard[i-1][FromColumn-1] != "" ) {
@@ -110,14 +110,14 @@ public class chessController {
 			return true;
 		}
 		else if(ToColumn != FromColumn) { // checks for pieces if rook is moving right
-			if(FromColumn < ToColumn) {
+			if(FromColumn < ToColumn) { // ROOK INCREASING COLUMN
 				for(int i = FromColumn+1; i < ToColumn+1; i++) { //loop through and check if any pieces are in the way of rooks path 
     				System.out.println(theGameBoard[FromRow-1][i-1] + " Is in the way at " + i + " " +FromRow);
     				if(theGameBoard[FromRow-1][i-1] != "" ) {
     					return false;
     				}
     			}
-			}else { // checks for pieces if rook is moving left
+			}else { // ROOK DECREASING COLUMN
 				for(int i = FromColumn-1; i > ToColumn-1; i--) { //loop through and check if any pieces are in the way of rooks path 
 					System.out.println(theGameBoard[FromRow-1][i-1] + " Is in the way at " + i + " " + FromRow);
     				if(theGameBoard[FromRow-1][i-1] != "" ) {
