@@ -51,6 +51,7 @@ public class Main {
         		+     "	             e              f"
         		+     "              g              h");
         
+        
         //TESTING FOR THE VALID MOVE FUNCTION - Nathan
         chessController CContr = new chessController(board); // makes he chessController object and passes the board
         Scanner keyboard = new Scanner(System.in); // creates new scanner
@@ -128,5 +129,32 @@ public class Main {
         	System.out.println("Move is Valid");
         else
         	System.out.println("Move is InValid");
+        
+        
+        //draw use case test (assumes it's p1's turn)
+        {
+        	//draw button clicked
+        	boolean draw = false;
+        	gameStatus g = new gameStatus();
+        	draw = g.checkDraw(new gameBoard(), true);
+        	if (draw) {
+        		//This is where the game would end
+        	}
+        	
+        	//assumes several repeated turns
+        	if (!draw)
+        	{
+        		draw = g.checkStalemate(true);
+        		draw = g.checkStalemate(true);
+        		draw = g.checkStalemate(false);
+        		draw = g.checkStalemate(true);
+        		draw = g.checkStalemate(true);
+        		draw = g.checkStalemate(true);
+        		if (draw) {
+        			//This is where the game would end
+        		}
+        	}
+        	
+        }
     }
 }
