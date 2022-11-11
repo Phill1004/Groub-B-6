@@ -7,7 +7,10 @@ public class gameStatus {
         String userColor = "W";
         String otherUserColor = "B";
         int kingRow = 0, kingCol = 0, rook1Row = 99, rook1Col = 99, rook2Row = 99, rook2Col = 99;
-        int counter = 0;//counter to differentiate the rooks
+        int bishop1Row = 99, bishop1Col = 99, bishop2Row = 99, bishop2Col = 99, queenRow = 99;
+        int knight1Row = 99, knight1Col = 99, knight2Row = 99, knight2Col = 99, queenCol = 99;
+        int counter = 0;//counter to differentiate the rooks and bishops
+        String kingInDiagonal = ""; //to test if king is in bishop diagonal
 
         //Locates the other players king
         for(int row = 0; row < 8; row++){
@@ -29,6 +32,45 @@ public class gameStatus {
                 else if(theBoard[row][col].equals("WRook")){
                     rook2Row = row;
                     rook2Col = col;
+                }
+            }
+        }
+        counter = 0;//resets counter, so it can be used to differentiate the bishops
+        //locates the players bishops
+        for(int row = 0; row < 8; row++){
+            for(int col = 0; col < 8; col++){
+                if(theBoard[row][col].equals("WBishop") && counter == 0){
+                    bishop1Row = row;
+                    bishop1Col = col;
+                    counter++;
+                }
+                else if(theBoard[row][col].equals("WBishop")){
+                    bishop2Row = row;
+                    bishop2Col = col;
+                }
+            }
+        }
+        counter = 0;//resets counter, so it can be used to knights
+        //locates the players knights
+        for(int row = 0; row < 8; row++){
+            for(int col = 0; col < 8; col++){
+                if(theBoard[row][col].equals("WKnight") && counter == 0){
+                    knight1Row = row;
+                    knight1Col = col;
+                    counter++;
+                }
+                else if(theBoard[row][col].equals("WKnight")){
+                    knight2Row = row;
+                    knight2Col = col;
+                }
+            }
+        }
+        //locates the players queen
+        for(int row = 0; row < 8; row++){
+            for(int col = 0; col < 8; col++){
+                if(theBoard[row][col].equals("WQueen")){
+                    queenRow = row;
+                    queenCol = col;
                 }
             }
         }
@@ -54,35 +96,504 @@ public class gameStatus {
                 }
             }
         }
-        //checks if rooks have check
-        if(rook1Row != 99 && rook2Row != 99){
 
-        }
-        else if(rook1Row != 99){
+        //checks to see if there is a rook on board, if so checks for check by first rook
+        if(rook1Row != 99){
+            //checks that row for a check, by checking each column in the row
             if(rook1Row == kingRow){
-                //checks out of bounds to make sure we dont overflow
-                if(rook1Row == 1){
+                //checks check for rooks on left edge, right edge, then any other spot.
+                if(rook1Col == 0){
+                    if(kingCol == rook1Col + 1){
+                        //rook has single depth check
+                    }
+                    else{
+                        for(int col = 1; col < kingCol; col++){
+                            if(theBoard[rook1Row][col].equals("")){
+                               //rook has check, but must be true for every iteration of the for loop
+                            }
+                            else{
+                                col = 10; //no check
+                            }
+                        }
+                    }
 
                 }
+                else if(rook1Col == 7){
+                    if(kingCol == rook1Col - 1){
+                        //rook has single depth check
+                    }
+                    else {
+                        for(int col = 6; kingCol < col; col--){
+                            if(theBoard[rook1Row][col].equals("")){
+                                //rook has check, but must be true for every iteration of the for loop
+                            }
+                            else{
+                                col = 0;//no check
+                            }
+                        }
+                    }
+
+                }
+                else if(rook1Col < kingCol){
+                    if(kingCol == rook1Col + 1){
+                        //check
+                    }
+                    else{
+                        for(int col = rook1Col + 1; col < kingCol; col++){
+                            if(theBoard[rook1Row][col].equals("")){
+                                //rook has check but must be true for every iteration
+                            }
+                            else{
+                                col = 10; //no check
+                            }
+                        }
+                    }
+                }
+                //rook col must be greater than king col
+                else{
+                    if(kingCol == rook1Col - 1){
+                        //rook has check
+                    }
+                    else{
+                        for(int col = rook1Col - 1; kingCol < col; col--){
+                            if(theBoard[rook1Row][col].equals("")){
+                                //rook has check but must be true for every iteration
+                            }
+                            else{
+                                col = 0;//no check
+                            }
+                        }
+                    }
+                }
             }
+            //checks that col for a check by checking each row in the column
             else if(rook1Col == kingCol){
                 if(rook1Row == 7){
                     if(kingRow == rook1Row - 1){
                         //rook has single depth check
                     }
-                    else if(theBoard[rook1Row + 1][rook1Col].equals("")){
-
+                    else{
+                        for(int row = 6; kingRow < row; row--){
+                            if(theBoard[row][rook1Col].equals("")){
+                                //check if every iteration is true
+                            }
+                            else{
+                                row = 0;//no check
+                            }
+                        }
                     }
                 }
                 else if(rook1Row == 0){
                     if(kingRow == rook1Row + 1){
                         //rook has single depth check
                     }
+                    else{
+                        for(int row = 1; row < kingRow; row++){
+                            if(theBoard[row][kingCol].equals("")){
+                                //has check but must be true for every iteration
+                            }
+                            else{
+                                row = 10;//no check, terminates loop
+                            }
+                        }
+                    }
+                }
+                else if(rook1Row < kingRow){
+                    if(kingRow == rook1Row + 1){
+                        //check
+                    }
+                    else{
+                        for(int row = rook1Row + 1; row < kingRow; row++){
+                            if(theBoard[row][kingCol].equals("")){
+                                //check but must be true for every iteration
+                            }
+                            else{
+                                row = 10;//no check, terminate loop
+                            }
+                        }
+                    }
+                }
+                //rook row must be greater than king row at this point
+                else{
+                    if(kingRow == rook1Row - 1){
+                        //check
+                    }
+                    else{
+                        for(int row = rook1Row -1; kingRow < row; row++){
+                            if(theBoard[row][kingCol].equals("")){
+                                //check but every iteration has to be true
+                            }
+                            else{
+                                row = 0; //no check, terminate loop
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //checks to see if there is a second rook on board, if so checks for check by second rook.
+        if(rook2Row != 99){
+            //checks that row for a check by cheking each column in the row
+            if(rook2Row == kingRow){
+                //checks check for rooks on left edge, right edge, then any other spot.
+                if(rook2Col == 0){
+                    if(kingCol == rook2Col + 1){
+                        //rook has single depth check
+                    }
+                    else{
+                        for(int col = 1; col < kingCol; col++){
+                            if(theBoard[rook2Row][col].equals("")){
+                                //rook has check, but must be true for every iteration of the for loop
+                            }
+                            else{
+                                col = 10; //no check
+                            }
+                        }
+                    }
+
+                }
+                else if(rook2Col == 7){
+                    if(kingCol == rook2Col - 1){
+                        //rook has single depth check
+                    }
+                    else {
+                        for(int col = 6; kingCol < col; col--){
+                            if(theBoard[rook2Row][col].equals("")){
+                                //rook has check, but must be true for every iteration of the for loop
+                            }
+                            else{
+                                col = 0;//no check
+                            }
+                        }
+                    }
+
+                }
+                else if(rook2Col < kingCol){
+                    if(kingCol == rook2Col + 1){
+                        //check
+                    }
+                    else{
+                        for(int col = rook2Col + 1; col < kingCol; col++){
+                            if(theBoard[rook2Row][col].equals("")){
+                                //rook has check but must be true for every iteration
+                            }
+                            else{
+                                col = 10; //no check
+                            }
+                        }
+                    }
+                }
+                //rook col must be greater than king col
+                else{
+                    if(kingCol == rook2Col - 1){
+                        //rook has check
+                    }
+                    else{
+                        for(int col = rook2Col - 1; kingCol < col; col--){
+                            if(theBoard[rook2Row][col].equals("")){
+                                //rook has check but must be true for every iteration
+                            }
+                            else{
+                                col = 0;//no check
+                            }
+                        }
+                    }
+                }
+            }
+            else if(rook2Col == kingCol){
+                if(rook2Row == 7){
+                    if(kingRow == rook2Row - 1){
+                        //rook has single depth check
+                    }
+                    else{
+                        for(int row = 6; kingRow < row; row--){
+                            if(theBoard[row][rook2Col].equals("")){
+                                //check if every iteration is true
+                            }
+                            else{
+                                row = 0;//no check
+                            }
+                        }
+                    }
+                }
+                else if(rook2Row == 0){
+                    if(kingRow == rook2Row + 1){
+                        //rook has single depth check
+                    }
+                    else{
+                        for(int row = 1; row < kingRow; row++){
+                            if(theBoard[row][kingCol].equals("")){
+                                //has check but must be true for every iteration
+                            }
+                            else{
+                                row = 10;//no check, terminates loop
+                            }
+                        }
+                    }
+                }
+                else if(rook2Row < kingRow){
+                    if(kingRow == rook2Row + 1){
+                        //check
+                    }
+                    else{
+                        for(int row = rook2Row + 1; row < kingRow; row++){
+                            if(theBoard[row][kingCol].equals("")){
+                                //check but must be true for every iteration
+                            }
+                            else{
+                                row = 10;//no check, terminate loop
+                            }
+                        }
+                    }
+                }
+                //rook row must be greater than king row at this point
+                else{
+                    if(kingRow == rook2Row - 1){
+                        //check
+                    }
+                    else{
+                        for(int row = rook2Row -1; kingRow < row; row++){
+                            if(theBoard[row][kingCol].equals("")){
+                                //check but every iteration has to be true
+                            }
+                            else{
+                                row = 0; //no check, terminate loop
+                            }
+                        }
+                    }
                 }
             }
         }
 
+        //checks to see if there is a bishop on board, if so checks for check by first bishop
+        if(bishop1Row != 99){
+            //checking bottom right diagonal for king
+            for(int row = bishop1Row + 1, col = bishop1Col + 1; row < 8 && col < 8; row++, col++){
+                if(theBoard[row][col].equals("BKing")){
+                    kingInDiagonal = "BR";
+                }
+            }
+            //checking bottom left diagonal for king
+            for(int row = bishop1Row + 1, col = bishop1Col - 1; row < 8 && col >= 0; row++, col--){
+                if(theBoard[row][col].equals("BKing")){
+                    kingInDiagonal = "BL";
+                }
+            }
+            //checking top left diagonal for king
+            for(int row = bishop1Row - 1, col = bishop1Col - 1; row >= 0 && col >= 0; row--, col--){
+                if(theBoard[row][col].equals("BKing")){
+                    kingInDiagonal = "TL";
+                }
+            }
+            //checking top right diagonal
+            for(int row = bishop1Row - 1, col = bishop1Col + 1; row >= 0 && col < 8; row--, col++){
+                if(theBoard[row][col].equals("BKing")){
+                    kingInDiagonal = "TR";
+                }
+            }
+            //if king is found to be in diagonal. this checks if bishop has a check on it
+            if(!kingInDiagonal.equals("")){
+                if(kingInDiagonal.equals("TL")){
+                    if(theBoard[bishop1Row - 1][bishop1Col - 1].equals("BKing")){
+                        //check
+                    }
+                    else{
+                        for(int row = bishop1Row - 1, col = bishop1Col - 1; row > kingRow && col > kingCol; row--, col--){
+                            if(theBoard[row][col].equals("")){
+                                //check but must be true every iteration
+                            }
+                            else{
+                                row = 0;//no check terminate loop
+                            }
+                        }
+                    }
+                }
+                else if(kingInDiagonal.equals("TR")){
+                    if(theBoard[bishop1Row - 1][bishop1Col + 1].equals("BKing")){
+                        //check
+                    }
+                    else{
+                        for(int row = bishop1Row - 1, col = bishop1Col + 1; row > kingRow && col < kingCol; row--, col++){
+                            if(theBoard[row][col].equals("")){
+                                //check, has to be true for each iteration
+                            }
+                            else{
+                                row = 0;//no check, terminate loop
+                            }
+                        }
+                    }
+                }
+                else if(kingInDiagonal.equals("BL")){
+                    if(theBoard[bishop1Row + 1][bishop1Col - 1].equals("BKing")){
+                        //check
+                    }
+                    else{
+                        for(int row = bishop1Row + 1, col = bishop1Col - 1; row < kingRow && col > kingCol; row++, col--){
+                            if(theBoard[row][col].equals("")){
+                                //check
+                            }
+                            else{
+                                row = 10; //no check terminate loop
+                            }
+                        }
+                    }
+                }
+                //king must be in BR diagonal of bishop
+                else{
+                    if(theBoard[bishop1Row + 1][bishop1Col + 1].equals("BKing")){
+                        //check
+                    }
+                    else{
+                        for(int row = bishop1Row + 1, col = bishop1Col + 1; row < kingRow && col < kingCol; row++, col++){
+                            if(theBoard[row][col].equals("")){
+                                //check but must be true for each iteration
+                            }
+                            else {
+                                row = 10;//no check terminate loop
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //checks to see if there is a second bishop on board, if so checks for check by second bishop
+        if(bishop2Row != 99){
+            //checking bottom right diagonal for king
+            for(int row = bishop2Row + 1, col = bishop2Col + 1; row < 8 && col < 8; row++, col++){
+                if(theBoard[row][col].equals("BKing")){
+                    kingInDiagonal = "BR";
+                }
+            }
+            //checking bottom left diagonal for king
+            for(int row = bishop2Row + 1, col = bishop2Col - 1; row < 8 && col >= 0; row++, col--){
+                if(theBoard[row][col].equals("BKing")){
+                    kingInDiagonal = "BL";
+                }
+            }
+            //checking top left diagonal for king
+            for(int row = bishop2Row - 1, col = bishop2Col - 1; row >= 0 && col >= 0; row--, col--){
+                if(theBoard[row][col].equals("BKing")){
+                    kingInDiagonal = "TL";
+                }
+            }
+            //checking top right diagonal
+            for(int row = bishop2Row - 1, col = bishop2Col + 1; row >= 0 && col < 8; row--, col++){
+                if(theBoard[row][col].equals("BKing")){
+                    kingInDiagonal = "TR";
+                }
+            }
+            //if king is found to be in diagonal. this checks if bishop has a check on it
+            if(!kingInDiagonal.equals("")){
+                if(kingInDiagonal.equals("TL")){
+                    if(theBoard[bishop2Row - 1][bishop2Col - 1].equals("BKing")){
+                        //check
+                    }
+                    else{
+                        for(int row = bishop2Row - 1, col = bishop2Col - 1; row > kingRow && col > kingCol; row--, col--){
+                            if(theBoard[row][col].equals("")){
+                                //check but must be true every iteration
+                            }
+                            else{
+                                row = 0;//no check terminate loop
+                            }
+                        }
+                    }
+                }
+                else if(kingInDiagonal.equals("TR")){
+                    if(theBoard[bishop2Row - 1][bishop2Col + 1].equals("BKing")){
+                        //check
+                    }
+                    else{
+                        for(int row = bishop2Row - 1, col = bishop2Col + 1; row > kingRow && col < kingCol; row--, col++){
+                            if(theBoard[row][col].equals("")){
+                                //check, has to be true for each iteration
+                            }
+                            else{
+                                row = 0;//no check, terminate loop
+                            }
+                        }
+                    }
+                }
+                else if(kingInDiagonal.equals("BL")){
+                    if(theBoard[bishop2Row + 1][bishop2Col - 1].equals("BKing")){
+                        //check
+                    }
+                    else{
+                        for(int row = bishop2Row + 1, col = bishop2Col - 1; row < kingRow && col > kingCol; row++, col--){
+                            if(theBoard[row][col].equals("")){
+                                //check
+                            }
+                            else{
+                                row = 10; //no check terminate loop
+                            }
+                        }
+                    }
+                }
+                //king must be in BR diagonal of bishop
+                else{
+                    if(theBoard[bishop2Row + 1][bishop2Col + 1].equals("BKing")){
+                        //check
+                    }
+                    else{
+                        for(int row = bishop2Row + 1, col = bishop2Col + 1; row < kingRow && col < kingCol; row++, col++){
+                            if(theBoard[row][col].equals("")){
+                                //check but must be true for each iteration
+                            }
+                            else {
+                                row = 10;//no check terminate loop
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        kingInDiagonal = "";//resets String so it can be used for queen section
 
+        //checks to see if there is a queen, if so checks for a check
+        if(queenRow != 99){
+            //checking to see if king is in row
+            if(kingRow == queenRow){
+
+            }
+            //checking to see if king is in column
+            else if(kingCol == queenCol){
+
+            }
+            else{
+                //checking for bottom right diagonal for king
+                for(int row = queenRow + 1, col = queenCol + 1; row < 8 && col < 8; row++, col++){
+                    if(theBoard[row][col].equals("BKing")){
+                        kingInDiagonal = "BR";
+                    }
+                }
+                //checking bottom left diagonal for king
+                for(int row = queenRow + 1, col = queenCol - 1; row < 8 && col >= 0; row++, col--){
+                    if(theBoard[row][col].equals("BKing")){
+                        kingInDiagonal = "BL";
+                    }
+                }
+                //checking top left diagonal for king
+                for(int row = queenRow - 1, col = queenCol - 1; row >= 0 && col >= 0; row--, col--){
+                    if(theBoard[row][col].equals("BKing")){
+                        kingInDiagonal = "TL";
+                    }
+                }
+                //checking top right diagonal
+                for(int row = queenRow - 1, col = queenCol + 1; row >= 0 && col < 8; row--, col++){
+                    if(theBoard[row][col].equals("BKing")){
+                        kingInDiagonal = "TR";
+                    }
+                }
+            }
+
+
+
+        }
+
+        //checks to see if there is a knight on board, if so checks for check by first knight
+        if(knight1Row != 99){
+            //still working on it
+        }
 
 
         return false;
