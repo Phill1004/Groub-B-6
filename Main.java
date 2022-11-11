@@ -1,7 +1,96 @@
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        chessPieces pieces = new chessPieces();
+
+        //Creates the 2d array game board
         String[][] board = new String[8][8];
+        board = setBoard(board);
+        displayBoard(board);
+
+        //TESTING FOR THE VALID MOVE FUNCTION - Nathan
+        chessController CContr = new chessController(board); // makes he chessController object and passes the board
+        Scanner keyboard = new Scanner(System.in); // creates new scanner
+        int X= 0, Y = 0, X2 = 0, Y2 = 0; // creates variables for user input
+
+        System.out.println("Enter Selection column :: ");
+        String column = keyboard.next();
+        switch(column.charAt(0)) { // switch case to take letter input and change it to number input for backend
+            case 'a' :
+                X = 1;
+                break;
+            case 'b' :
+                X = 2;
+                break;
+            case 'c' :
+                X = 3;
+                break;
+            case 'd' :
+                X = 4;
+                break;
+            case 'e' :
+                X = 5;
+                break;
+            case 'f' :
+                X = 6;
+                break;
+            case 'g' :
+                X = 7;
+                break;
+            case 'h' :
+                X = 8;
+                break;
+        }
+
+        System.out.println("Enter Selection row :: ");
+        Y = keyboard.nextInt();
+
+        //Gets input on where to go
+        System.out.println("Enter Selection column :: ");
+        String column2 = keyboard.next();
+        switch(column2.charAt(0)) { // switch case to take letter input and change it to number input for backend
+            case 'a' :
+                X2 = 1;
+                break;
+            case 'b' :
+                X2 = 2;
+                break;
+            case 'c' :
+                X2 = 3;
+                break;
+            case 'd' :
+                X2 = 4;
+                break;
+            case 'e' :
+                X2 = 5;
+                break;
+            case 'f' :
+                X2 = 6;
+                break;
+            case 'g' :
+                X2 = 7;
+                break;
+            case 'h' :
+                X2 = 8;
+                break;
+        }
+
+        System.out.println("Enter Selection row :: ");
+        Y2 = keyboard.nextInt();
+
+        // 0 - white
+        // 1 - black
+        Boolean Validmove = CContr.validMove(board, X, Y, X2, Y2, "0");
+        if(Validmove)
+            System.out.println("Move is Valid");
+        else
+            System.out.println("Move is InValid");
+    }
+
+    public static String[][] setBoard(String[][] board){
+        //creates the chess pieces object
+        chessPieces pieces = new chessPieces();
+
         //sets black pieces
         board[0][0] = pieces.rook(1, 0, 0);
         board[0][1] = pieces.knight(1, 0, 1);
@@ -29,15 +118,25 @@ public class Main {
         //sets empty spaces
         for(int row = 2; row < 6; row++){
             for(int col = 0; col < 8; col++){
-                board[row][col] = " ";
+                board[row][col] = "";
             }
         }
+        return board;
+    }
 
+    public static void displayBoard(String[][] board){
         for(int row = 0; row < 8; row++){
             System.out.println();
+            System.out.print(row+1 + " "); // prints out the numbers on the side
             for(int col = 0; col < 8; col++){
-                System.out.print(board[row][col]);
+                System.out.printf("%15s","[" + board[row][col] + "]   "); // formats the string to make it line up
             }
+            System.out.println(); // new line for spacing
         }
+        //prints out the letter at the bottom
+        System.out.println("         a              b"
+                +     "              c              d"
+                +     "	             e              f"
+                +     "              g              h");
     }
 }
