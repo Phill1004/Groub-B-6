@@ -16,37 +16,60 @@ public class chessController {
     	String ToPieceName = theGameBoard[ToRow-1][ToColumn-1];
     	
     	System.out.println(FromPieceName +" From " + FromColumn + " " + FromRow);
-    	System.out.println(" To " + ToColumn + " " + ToRow + " "+ ToPieceName);
+    	System.out.println("       To " + ToColumn + " " + ToRow + " "+ ToPieceName);
     	
     	//If the input or output row and column are out of bounds then return false
     	if(FromColumn > 8 || FromColumn < 1 || ToColumn > 8 || ToColumn < 1 ||
     			FromRow > 8 || FromRow <1 || ToRow > 8 || ToRow < 1)
     		return false;
-    	else if(ToPieceName == "") { // if the space is empty then its valid
-    		return true;
-    	}
     	else if(FromPieceName == "") {// checks to see if you picked a piece to move
     		return false;
-    	}
+    	}else if(FromColumn == ToColumn && FromRow == ToRow) // check if the same values are entered for to and from coordinates
+    		return false;
     	
+    	//System.out.println(FromRow - ToRow);
     	switch(FromPieceName) { // switch case to check movement based on piece name
     	case "BPawn":
+    		int MoveDistance = 1; // move distance of pawn
+    		if(FromRow == 1) {
+    			MoveDistance = 2;
+    		}
     		if(ToColumn > FromColumn || ToColumn < FromColumn) { // checks to see if the pawn is switching columns
     			return false;
     		}else if(ToRow < FromRow) { // checks to see if the pawn is moving backwards (Black side)
+    			return false;
+    		}else if((ToRow - FromRow) > MoveDistance) { // checks to see if the pawn is moving greater than it should be
     			return false;
     		}
     		else
     			return true;
     	case "WPawn":
+    		MoveDistance = 1; // move distance of pawn
+    		if(FromRow == 1) {
+    			MoveDistance = 2;
+    		}
     		if(ToColumn > FromColumn || ToColumn < FromColumn) { // checks to see if the pawn is switching columns
     			return false;
     		}else if(ToRow > FromRow) { // checks to see if the pawn is moving backwards (White side)
+    			return false;
+    		}else if((FromRow - ToRow) > MoveDistance) { // checks to see if the pawn is moving greater than it should be
     			return false;
     		}
     		else
     			return true;
     	case "BRook":
+    		if(ToRow != FromRow && ToColumn != FromColumn) { // check to see if the rook is trying to move on both row and column
+    			return false;
+    		}
+    		if(ToRow != FromRow) { // check if rook is moving on rows
+    			for(int i = FromRow+1; i < ToRow+1; i++) { //loop through and check if any pieces are in the way of rooks path 
+    				System.out.println(theGameBoard[i-1][FromColumn-1] + " Is in the way at " +FromColumn + " " +i);
+    				if(theGameBoard[i-1][FromColumn-1] != "" ) {
+    					return false;
+    				}
+    			}
+    			return true;
+    		}
     		break;
     	case "WRook":
     		break;
