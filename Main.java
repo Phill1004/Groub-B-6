@@ -12,6 +12,20 @@ public class Main {
         chessController CContr = new chessController(board); // makes he chessController object and passes the board
         Scanner keyboard = new Scanner(System.in); // creates new scanner
         int X= 0, Y = 0, X2 = 0, Y2 = 0; // creates variables for user input
+        
+        // TESTING FOR TWO CLOCKS - Nicholas
+        // This clock will run while the program runs even if there is no more output
+        // Once the clock ends it will print a msg. We can use player#.timerEnded boolean to check if the timer ended
+        int minutes = 15; // can change the amount of time if needed
+        clock player1 = new clock(); // create player 1 and 2's clock
+        clock player2 = new clock();
+        player1.minutes = minutes; // set minutes for each player's clock
+        player2.minutes = minutes;
+        player1.name = "player1"; // set names. This can be removed later but for now shows who's timer ended when printing
+        player2.name = "player2";
+        player1.countDownTimer(); // start player 1 and 2's clock
+        player2.countDownTimer();
+        System.out.println(minutes + " minute timer has begun");
 
         System.out.println("Enter Selection column :: ");
         String column = keyboard.next();
