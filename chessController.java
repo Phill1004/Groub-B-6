@@ -34,7 +34,7 @@ public class chessController {
     	switch(FromPieceName) { // switch case to check movement based on piece name
     	case "BPawn": // CASE FOR BLACK PAWN MOVING
     		int MoveDistance = 1; // move distance of pawn
-    		if(FromRow == 1) {
+    		if(FromRow == 2) {
     			MoveDistance = 2;
     		}
     		if(ToColumn > FromColumn || ToColumn < FromColumn) { // checks to see if the pawn is switching columns
@@ -48,7 +48,7 @@ public class chessController {
     			return true;
     	case "WPawn": // CASE FOR WHITE PAWN MOVING
     		MoveDistance = 1; // move distance of pawn
-    		if(FromRow == 1) {
+    		if(FromRow == 7) {
     			MoveDistance = 2;
     		}
     		if(ToColumn > FromColumn || ToColumn < FromColumn) { // checks to see if the pawn is switching columns
@@ -93,15 +93,17 @@ public class chessController {
 		if(ToRow != FromRow) { // check if rook is moving left on rows
 			if(FromRow < ToRow) { // ROOK INCREASING ROW
 				for(int i = FromRow+1; i < ToRow+1; i++) { //loop through and check if any pieces are in the way of rooks path 
-					System.out.println(theGameBoard[i-1][FromColumn-1] + " Is in the way at " +FromColumn + " " +i);
+					System.out.println(theGameBoard[i-1][FromColumn-1] + " Is at " +FromColumn + " " +i);
 					if(theGameBoard[i-1][FromColumn-1] != "" ) {
+						System.out.println(theGameBoard[FromRow-1][i-1] + " Is in the way at " + i + " " + FromRow);
 						return false;
 					}
 				}	
     		}else { // ROOK DECREASING ROW
     			for(int i = FromRow-1; i > ToRow-1; i--) { //loop through and check if any pieces are in the way of rooks path 
-					System.out.println(theGameBoard[i-1][FromColumn-1] + " Is in the way at " +FromColumn + " " +i);
+					System.out.println(theGameBoard[i-1][FromColumn-1] + " Is at " +FromColumn + " " +i);
 					if(theGameBoard[i-1][FromColumn-1] != "" ) {
+						System.out.println(theGameBoard[FromRow-1][i-1] + " Is in the way at " + i + " " + FromRow);
 						return false;
 					}
 				}
@@ -112,15 +114,17 @@ public class chessController {
 		else if(ToColumn != FromColumn) { // checks for pieces if rook is moving right
 			if(FromColumn < ToColumn) { // ROOK INCREASING COLUMN
 				for(int i = FromColumn+1; i < ToColumn+1; i++) { //loop through and check if any pieces are in the way of rooks path 
-    				System.out.println(theGameBoard[FromRow-1][i-1] + " Is in the way at " + i + " " +FromRow);
+    				System.out.println(theGameBoard[FromRow-1][i-1] + " Is at " + i + " " +FromRow);
     				if(theGameBoard[FromRow-1][i-1] != "" ) {
+    					System.out.println(theGameBoard[FromRow-1][i-1] + " Is in the way at " + i + " " + FromRow);
     					return false;
     				}
     			}
 			}else { // ROOK DECREASING COLUMN
 				for(int i = FromColumn-1; i > ToColumn-1; i--) { //loop through and check if any pieces are in the way of rooks path 
-					System.out.println(theGameBoard[FromRow-1][i-1] + " Is in the way at " + i + " " + FromRow);
+					System.out.println(theGameBoard[FromRow-1][i-1] + " Is at " + i + " " + FromRow);
     				if(theGameBoard[FromRow-1][i-1] != "" ) {
+    					System.out.println(theGameBoard[FromRow-1][i-1] + " Is in the way at " + i + " " + FromRow);
     					return false;
     				}
     			}
@@ -132,8 +136,62 @@ public class chessController {
     }
     // METHOD FOR VALIDATING A BISHOPS MOVE
     public boolean BishopValidMove(String[][] theGameBoard,int FromColumn, int FromRow, int ToColumn, int ToRow) { 
-    	System.out.println("Not Done Yet");
-    	return false;
+    	//System.out.println("Not Done Yet");
+    	
+    	if(ToRow == FromRow || ToColumn == FromColumn)
+    		return false;
+    	int Slope = (ToRow-FromRow)/(ToColumn-FromColumn); // gets the slope of the line
+    	//System.out.println("Slope :: " + Slope);
+    	if(Slope == -1) { // checks if the slope is 1 or -1 (diagonal for bishop)
+    		if(ToColumn > FromColumn) { // check the diagonal going top right for any pieces in the way
+    			//int count = 0;
+    			for(int i = 1; i <= ToColumn; i++) {
+    				int addedrow = FromRow-i;
+    				int addedcol = FromColumn+i;
+    				System.out.println(theGameBoard[FromRow-1-i][FromColumn+i-1] + " Is at " + addedrow + " " + addedcol);
+    				if(theGameBoard[FromRow-1-i][FromColumn+i-1] != "") {
+    					System.out.println(theGameBoard[FromRow-1-i][FromColumn+i-1] + " Is in the way at " + addedrow + " " + addedcol);
+    					return false;
+    				}
+    			}
+    		}else { // ToColumn < FromColumn
+    			for(int i = 1; i <= ToColumn; i++) { // check the diagonal going down and to the left
+    				int addedrow = FromRow+i;
+    				int addedcol = FromColumn-i;
+    				System.out.println(theGameBoard[FromRow-1+i][FromColumn-i-1] + " Is at " + addedrow + " " + addedcol);
+    				if(theGameBoard[FromRow-1+i][FromColumn-i-1] != "") {
+    					System.out.println(theGameBoard[FromRow-1+i][FromColumn-i-1] + " Is in the way at " + addedrow + " " + addedcol);
+    					return false;
+    				}
+    			}
+    		}
+    		return true;
+    	}
+    	else {
+    		if(ToColumn > FromColumn) { // check the diagonal going bottom right for any pieces in the way
+    			//int count = 0;
+    			for(int i = 1; i <= ToColumn; i++) {
+    				int addedrow = FromRow+i;
+    				int addedcol = FromColumn+i;
+    				System.out.println(theGameBoard[FromRow-1+i][FromColumn+i-1] + " Is at " + addedrow + " " + addedcol);
+    				if(theGameBoard[FromRow-1+i][FromColumn+i-1] != "") {
+    					System.out.println(theGameBoard[FromRow-1+i][FromColumn+i-1] + " Is in the way at " + addedrow + " " + addedcol);
+    					return false;
+    				}
+    			}
+    		}else { // ToColumn < FromColumn
+    			for(int i = 1; i <= ToColumn; i++) { // check the diagonal going up and to the left
+    				int addedrow = FromRow-i;
+    				int addedcol = FromColumn-i;
+    				System.out.println(theGameBoard[FromRow-1-i][FromColumn-i-1] + " Is at " + addedrow + " " + addedcol);
+    				if(theGameBoard[FromRow-1-i][FromColumn-i-1] != "") {
+    					System.out.println(theGameBoard[FromRow-1-i][FromColumn-i-1] + " Is in the way at " + addedrow + " " + addedcol);
+    					return false;
+    				}
+    			}
+    		}
+    		return true;
+    	}
     }
     // METHOD FOR VALIDATING A QUEENS MOVE
     public boolean QueenValidMove(String[][] theGameBoard,int FromColumn, int FromRow, int ToColumn, int ToRow) {
