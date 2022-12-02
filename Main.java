@@ -3,16 +3,18 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
+        gameStatus game = new gameStatus();
+
         //Creates the 2d array game board
         String[][] board = new String[8][8];
+        boolean gameOver = false;
         board = setBoard(board);
-        displayBoard(board);
 
         //TESTING FOR THE VALID MOVE FUNCTION - Nathan
         chessController CContr = new chessController(board); // makes he chessController object and passes the board
         Scanner keyboard = new Scanner(System.in); // creates new scanner
         int X= 0, Y = 0, X2 = 0, Y2 = 0; // creates variables for user input
-        
+
         // TESTING FOR TWO CLOCKS - Nicholas
         // This clock will run while the program runs even if there is no more output
         // Once the clock ends it will print a msg. We can use player#.timerEnded boolean to check if the timer ended
@@ -26,80 +28,91 @@ public class Main {
         player1.countDownTimer(); // start player 1 and 2's clock
         player2.countDownTimer();
         System.out.println(minutes + " minute timer has begun");
+        displayBoard(board);
+        while(gameOver == false){
 
-        System.out.println("Enter Selection column :: ");
-        String column = keyboard.next();
-        switch(column.charAt(0)) { // switch case to take letter input and change it to number input for backend
-            case 'a' :
-                X = 1;
-                break;
-            case 'b' :
-                X = 2;
-                break;
-            case 'c' :
-                X = 3;
-                break;
-            case 'd' :
-                X = 4;
-                break;
-            case 'e' :
-                X = 5;
-                break;
-            case 'f' :
-                X = 6;
-                break;
-            case 'g' :
-                X = 7;
-                break;
-            case 'h' :
-                X = 8;
-                break;
+            System.out.println("Enter piece to move column :: ");
+            String column = keyboard.next();
+            switch(column.charAt(0)) { // switch case to take letter input and change it to number input for backend
+                case 'a' :
+                    X = 1;
+                    break;
+                case 'b' :
+                    X = 2;
+                    break;
+                case 'c' :
+                    X = 3;
+                    break;
+                case 'd' :
+                    X = 4;
+                    break;
+                case 'e' :
+                    X = 5;
+                    break;
+                case 'f' :
+                    X = 6;
+                    break;
+                case 'g' :
+                    X = 7;
+                    break;
+                case 'h' :
+                    X = 8;
+                    break;
+            }
+
+            System.out.println("Enter piece to move row :: ");
+            Y = keyboard.nextInt();
+
+            //Gets input on where to go
+            System.out.println("Enter piece to where column :: ");
+            String column2 = keyboard.next();
+            switch(column2.charAt(0)) { // switch case to take letter input and change it to number input for backend
+                case 'a' :
+                    X2 = 1;
+                    break;
+                case 'b' :
+                    X2 = 2;
+                    break;
+                case 'c' :
+                    X2 = 3;
+                    break;
+                case 'd' :
+                    X2 = 4;
+                    break;
+                case 'e' :
+                    X2 = 5;
+                    break;
+                case 'f' :
+                    X2 = 6;
+                    break;
+                case 'g' :
+                    X2 = 7;
+                    break;
+                case 'h' :
+                    X2 = 8;
+                    break;
+            }
+
+            System.out.println("Enter piece to where row :: ");
+            Y2 = keyboard.nextInt();
+
+            // 0 - white
+            // 1 - black
+            Boolean Validmove = CContr.validMove(board, X, Y, X2, Y2, "0");
+            if(Validmove) {
+                System.out.println("Move is Valid");
+                board = updateBoard(board, X, Y, X2, Y2);
+            }
+            else {
+                System.out.println("Move is InValid");
+            }
+            gameOver = game.checkWin(board, 0);
+            displayBoard(board);
+
+
         }
 
-        System.out.println("Enter Selection row :: ");
-        Y = keyboard.nextInt();
-
-        //Gets input on where to go
-        System.out.println("Enter Selection column :: ");
-        String column2 = keyboard.next();
-        switch(column2.charAt(0)) { // switch case to take letter input and change it to number input for backend
-            case 'a' :
-                X2 = 1;
-                break;
-            case 'b' :
-                X2 = 2;
-                break;
-            case 'c' :
-                X2 = 3;
-                break;
-            case 'd' :
-                X2 = 4;
-                break;
-            case 'e' :
-                X2 = 5;
-                break;
-            case 'f' :
-                X2 = 6;
-                break;
-            case 'g' :
-                X2 = 7;
-                break;
-            case 'h' :
-                X2 = 8;
-                break;
-        }
-
-        System.out.println("Enter Selection row :: ");
-        Y2 = keyboard.nextInt();
-
-        // 0 - white
-        // 1 - black
-        Boolean Validmove = CContr.validMove(board, X, Y, X2, Y2, "0");
-        if(Validmove)
-            System.out.println("Move is Valid");
-        else
-            System.out.println("Move is InValid");
-
+        System.out.println("Game Over!");
 
         //draw use case test (assumes it's p1's turn)
         {
@@ -179,5 +192,15 @@ public class Main {
                 +     "              c              d"
                 +     "	             e              f"
                 +     "              g              h");
+    }
+
+    public static String[][] updateBoard(String[][] board, int x, int y, int x2, int y2){
+        x -= 1;
+        y -= 1;
+        x2 -= 1;
+        y2 -= 1;
+        board[y2][x2] = board[y][x];
+        board[y][x] = "";
+        return board;
     }
 }
