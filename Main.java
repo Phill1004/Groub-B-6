@@ -19,44 +19,48 @@ public class Main {
         // This clock will run while the program runs even if there is no more output
         // Once the clock ends it will print a msg. We can use player#.timerEnded boolean to check if the timer ended
         int minutes = 15; // can change the amount of time if needed
-        clock player1 = new clock(); // create player 1 and 2's clock
-        clock player2 = new clock();
-        player1.minutes = minutes; // set minutes for each player's clock
-        player2.minutes = minutes;
-        player1.name = "player1"; // set names. This can be removed later but for now shows who's timer ended when printing
-        player2.name = "player2";
-        player1.countDownTimer(); // start player 1 and 2's clock
-        player2.countDownTimer();
-        System.out.println(minutes + " minute timer has begun");
+        clock white = new clock(); // create player 1 and 2's clock
+        clock black = new clock();
+        white.name = "White"; // set names. This can be removed later but for now shows who's timer ended when printing
+        black.name = "Black";
+        System.out.println(minutes + " minute game has begun");
         displayBoard(board);
-        
+
         String turn = "0";
         int turnCount = 0;
         System.out.println("White Start");
         boolean Validmove = false;
         while(gameOver == false){
-        	
-        	if(!Validmove) {
-        		turn = turn; // basically do nothing let the user input again
-        	}
-        	else {
-        		if(turnCount%2 == 0)
-        			turn = "0"; //white turn
-        		else
-        			turn = "1"; //black turn	
-        	}
-        	
-        	
-        	String Name = ""; // stores the name of the person moving
-        	switch(turn) { // converts the number of the player to the color they play for printing
-        	case "0":
-        		Name = "White";
-        		break;
-        	case "1":
-        		Name = "Black";
-        		break;
-        	}
-        	System.out.println("It's "+Name+"'s turn "); // prints out the whose turn it is
+
+            if(!Validmove) {
+                turn = turn; // basically do nothing let the user input again
+            }
+            else {
+                if(turnCount%2 == 0)
+                    turn = "0"; //white turn
+                else
+                    turn = "1"; //black turn
+            }
+
+
+            String Name = ""; // stores the name of the person moving
+            switch(turn) { // converts the number of the player to the color they play for printing
+                case "0":
+                    Name = "White";
+                    white.turn = true;
+                    black.turn = false;
+                    white.runTimer(white.elapsedTime);
+                    white.timeLeft(white.elapsedTime);
+                    break;
+                case "1":
+                    Name = "Black";
+                    black.turn = true;
+                    white.turn = false;
+                    black.runTimer(black.elapsedTime);
+                    black.timeLeft(black.elapsedTime);
+                    break;
+            }
+            System.out.println("It's "+Name+"'s turn "); // prints out the whose turn it is
             System.out.println("Enter piece to move column :: ");
             String column = keyboard.next();
             switch(column.charAt(0)) { // switch case to take letter input and change it to number input for backend
