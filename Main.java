@@ -29,8 +29,34 @@ public class Main {
         player2.countDownTimer();
         System.out.println(minutes + " minute timer has begun");
         displayBoard(board);
+        
+        String turn = "0";
+        int turnCount = 0;
+        System.out.println("White Start");
+        boolean Validmove = false;
         while(gameOver == false){
-
+        	
+        	if(!Validmove) {
+        		turn = turn; // basically do nothing let the user input again
+        	}
+        	else {
+        		if(turnCount%2 == 0)
+        			turn = "0"; //white turn
+        		else
+        			turn = "1"; //black turn	
+        	}
+        	
+        	
+        	String Name = ""; // stores the name of the person moving
+        	switch(turn) { // converts the number of the player to the color they play for printing
+        	case "0":
+        		Name = "White";
+        		break;
+        	case "1":
+        		Name = "Black";
+        		break;
+        	}
+        	System.out.println("It's "+Name+"'s turn "); // prints out the whose turn it is
             System.out.println("Enter piece to move column :: ");
             String column = keyboard.next();
             switch(column.charAt(0)) { // switch case to take letter input and change it to number input for backend
@@ -98,17 +124,17 @@ public class Main {
 
             // 0 - white
             // 1 - black
-            Boolean Validmove = CContr.validMove(board, X, Y, X2, Y2, "0");
+            Validmove = CContr.validMove(board, X, Y, X2, Y2, Name);
             if(Validmove) {
                 System.out.println("Move is Valid");
                 board = updateBoard(board, X, Y, X2, Y2);
+                turnCount++;// updates the turn count
             }
             else {
                 System.out.println("Move is InValid");
             }
             gameOver = game.checkWin(board, 0);
             displayBoard(board);
-
 
         }
 
