@@ -158,7 +158,7 @@ public class chessController {
     	if(Slope == -1) { // checks if the slope is 1 or -1 (diagonal for bishop)
     		if(ToColumn > FromColumn) { // check the diagonal going top right for any pieces in the way
     			//int count = 0;
-    			for(int i = 1; i <= ToColumn; i++) {
+    			for(int i = 1; i+FromColumn <= ToColumn; i++) {
     				int addedrow = FromRow-i;
     				int addedcol = FromColumn+i;
     				System.out.println(theGameBoard[FromRow-1-i][FromColumn+i-1] + " Is at " + addedrow + " " + addedcol);
@@ -168,7 +168,7 @@ public class chessController {
     				}
     			}
     		}else { // ToColumn < FromColumn
-    			for(int i = 1; i <= ToColumn; i++) { // check the diagonal going down and to the left
+    			for(int i = 1; i+FromColumn <= ToColumn; i++) { // check the diagonal going down and to the left
     				int addedrow = FromRow+i;
     				int addedcol = FromColumn-i;
     				System.out.println(theGameBoard[FromRow-1+i][FromColumn-i-1] + " Is at " + addedrow + " " + addedcol);
@@ -183,7 +183,7 @@ public class chessController {
     	else {
     		if(ToColumn > FromColumn) { // check the diagonal going bottom right for any pieces in the way
     			//int count = 0;
-    			for(int i = 1; i <= ToColumn; i++) {
+    			for(int i = 1; i+FromColumn <= ToColumn; i++) {
     				int addedrow = FromRow+i;
     				int addedcol = FromColumn+i;
     				System.out.println(theGameBoard[FromRow-1+i][FromColumn+i-1] + " Is at " + addedrow + " " + addedcol);
@@ -193,7 +193,7 @@ public class chessController {
     				}
     			}
     		}else { // ToColumn < FromColumn
-    			for(int i = 1; i <= ToColumn; i++) { // check the diagonal going up and to the left
+    			for(int i = 1; i+FromColumn <= ToColumn; i++) { // check the diagonal going up and to the left
     				int addedrow = FromRow-i;
     				int addedcol = FromColumn-i;
     				System.out.println(theGameBoard[FromRow-1-i][FromColumn-i-1] + " Is at " + addedrow + " " + addedcol);
@@ -206,11 +206,22 @@ public class chessController {
     		return true;
     	}
     }
-    // METHOD FOR VALIDATING A QUEENS MOVE
+ // METHOD FOR VALIDATING A QUEENS MOVE
     public boolean QueenValidMove(String[][] theGameBoard,int FromColumn, int FromRow, int ToColumn, int ToRow) {
-    	System.out.println("Not Done Yet"); // queen can move on all diagonals and on both x and y axis
-    	//basically rook + bishop movement
-    	return false;
+    	boolean movingDiagonal = false;
+    	
+    	//checks if the destination is on a diagonal from the queen
+    	if ( FromRow - ToRow != 0 && FromColumn - ToColumn != 0) {
+    		movingDiagonal = true;
+    	}
+    	
+    	//uses validity function for bishop if queen is moving diagonally and rook if moving in a straight line
+    	if (movingDiagonal) {
+    		return BishopValidMove(theGameBoard, FromColumn, FromRow, ToColumn, ToRow);
+    	}
+    	else {
+    		return RookValidMove( theGameBoard, FromColumn,  FromRow,  ToColumn,  ToRow);
+    	}
     }
     // METHOD FOR VALIDATING A KINGS MOVE
     public boolean KingValidMove(String[][] theGameBoard,int FromColumn, int FromRow, int ToColumn, int ToRow) {
