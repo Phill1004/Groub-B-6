@@ -47,17 +47,17 @@ public class Main {
             switch(turn) { // converts the number of the player to the color they play for printing
                 case "0":
                     Name = "White";
-                    white.turn = true;
+                    white.turn = true; // set turn variables
                     black.turn = false;
-                    white.runTimer(white.elapsedTime);
+                    white.runTimer(white.elapsedTime); // start timer and print time left for the player
                     white.timeLeft(white.elapsedTime);
                     break;
                 case "1":
                     Name = "Black";
-                    black.turn = true;
+                    black.turn = true; // set turn variables
                     white.turn = false;
                     black.runTimer(black.elapsedTime);
-                    black.timeLeft(black.elapsedTime);
+                    black.timeLeft(black.elapsedTime); // start timer and print time left for the player
                     break;
             }
             System.out.println("It's "+Name+"'s turn "); // prints out the whose turn it is
