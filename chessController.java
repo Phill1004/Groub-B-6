@@ -12,6 +12,13 @@ public class chessController {
 	}
     boolean validMove(String[][] theGameBoard, int FromColumn, int FromRow, int ToColumn, int ToRow, String theUserColor){
     	
+    	
+    	String OtherColor = "White"; // variable for storing the Enemy piece color
+    	if(theUserColor.equals("White"))
+    		OtherColor = "Black";
+    	
+    	
+    	
     	//If the input or output row and column are out of bounds then return false
     	if(FromColumn > 8 || FromColumn < 1 || ToColumn > 8 || ToColumn < 1 ||
     			FromRow > 8 || FromRow <1 || ToRow > 8 || ToRow < 1) {
@@ -26,6 +33,12 @@ public class chessController {
     	if(FromPieceName == "") {// checks to see if you picked a piece to move
     		return false;
     	}
+    	
+    	if(FromPieceName.charAt(0) != theUserColor.charAt(0)) {
+    		return false; // if the piece being moved is not the users then return false
+    	}
+    	
+    	
     	
     	System.out.println(FromPieceName +" From " + FromColumn + " " + FromRow);
     	System.out.println("       To " + ToColumn + " " + ToRow + " "+ ToPieceName);
@@ -94,7 +107,7 @@ public class chessController {
 			if(FromRow < ToRow) { // ROOK INCREASING ROW
 				for(int i = FromRow+1; i < ToRow+1; i++) { //loop through and check if any pieces are in the way of rooks path 
 					System.out.println(theGameBoard[i-1][FromColumn-1] + " Is at " +FromColumn + " " +i);
-					if(theGameBoard[i-1][FromColumn-1] != "" ) {
+					if(theGameBoard[i-1][FromColumn-1] != "") {
 						System.out.println(theGameBoard[FromRow-1][i-1] + " Is in the way at " + i + " " + FromRow);
 						return false;
 					}
@@ -195,17 +208,26 @@ public class chessController {
     }
     // METHOD FOR VALIDATING A QUEENS MOVE
     public boolean QueenValidMove(String[][] theGameBoard,int FromColumn, int FromRow, int ToColumn, int ToRow) {
-    	System.out.println("Not Done Yet");
+    	System.out.println("Not Done Yet"); // queen can move on all diagonals and on both x and y axis
+    	//basically rook + bishop movement
     	return false;
     }
     // METHOD FOR VALIDATING A KINGS MOVE
     public boolean KingValidMove(String[][] theGameBoard,int FromColumn, int FromRow, int ToColumn, int ToRow) {
-    	System.out.println("Not Done Yet");
-    	return false;
+    	//System.out.println("Not Done Yet"); // king can move only 1 space at a time around it
+    	if(Math.abs(FromColumn - ToColumn) > 1) // check if the move is greater than 1 on column
+    		return false;
+    	if(Math.abs(FromRow - ToRow) > 1) //check if the move is greater than 1 on row
+    		return false;
+    	if(theGameBoard[ToRow-1][ToColumn-1] != "") {
+    		System.out.println("made it");
+    		return false;//check if there is a piece in the way
+    	}
+    	return true;
     }
     // METHOD FOR VALIDATING A KNIGHTS MOVE
     public boolean KnightValidMove(String[][] theGameBoard,int FromColumn, int FromRow, int ToColumn, int ToRow) {
-    	System.out.println("Not Done Yet");
+    	System.out.println("Not Done Yet");// knights can move two spaces around them + 1 space up or down in an L shape
     	return false;
     }
 }
