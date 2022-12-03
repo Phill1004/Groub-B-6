@@ -18,9 +18,9 @@ public class Main {
 					+ "letter corresponding to your chosen column, then the number corresponding to your chosen row\n"
 					+ "If your move is valid, the process repeats for each player until the game is over\n"
 					+ "The game is won if your opponent forfeits or if you take the opposing king.\n");
-        	 System.out.println("Press enter key to continue to new game...");
+        	 //System.out.println("Press enter key to continue to new game...");
              keyboard.nextLine();
-             keyboard.nextLine();
+             //keyboard.nextLine();
         }
         else if (mainMenu.equals("3")) {
         	System.exit(0);
