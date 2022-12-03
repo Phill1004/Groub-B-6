@@ -5,6 +5,8 @@ public class Main {
 
         gameStatus game = new gameStatus();
 
+        System.out.println("Welcome to JAVA CHESS");
+        
         //Creates the 2d array game board
         String[][] board = new String[8][8];
         boolean gameOver = false;
@@ -26,6 +28,8 @@ public class Main {
         System.out.println(minutes + " minute game has begun");
         displayBoard(board);
 
+       int winner = 0;
+        
         String turn = "0";
         int turnCount = 0;
         System.out.println("White Start");
@@ -61,6 +65,31 @@ public class Main {
                     break;
             }
             System.out.println("It's "+Name+"'s turn "); // prints out the whose turn it is
+            
+            System.out.println("What would you like to do? 1-Play 2-Request Draw 3-Forfeit");
+        	String choice = keyboard.next();
+        	
+        	if (choice.equals("2")) {
+        		gameOver = game.checkDraw(turnCount%2==0, keyboard);
+        		if (gameOver) {
+        			winner = 0;
+        			break;
+        		}
+        		continue;
+        	}
+        	else if (choice.equals("3")) {
+        		gameOver = true;
+        		if(turnCount%2 == 0)
+        			winner = 2;
+        		else
+        			winner = 1;
+        		
+        		break;
+        	}
+        	else if (!choice.equals("1")) {
+        		continue;
+        	}
+            
             System.out.println("Enter piece to move column :: ");
             String column = keyboard.next();
             switch(column.charAt(0)) { // switch case to take letter input and change it to number input for backend
@@ -143,32 +172,18 @@ public class Main {
         }
 
         System.out.println("Game Over!");
-
-        //draw use case test (assumes it's p1's turn)
-        {
-            //draw button clicked
-            boolean draw = false;
-            gameStatus g = new gameStatus();
-            draw = g.checkDraw(new gameBoard(), true);
-            if (draw) {
-                //This is where the game would end
-            }
-
-            //assumes several repeated turns
-            if (!draw)
-            {
-                draw = g.checkStalemate(true);
-                draw = g.checkStalemate(true);
-                draw = g.checkStalemate(false);
-                draw = g.checkStalemate(true);
-                draw = g.checkStalemate(true);
-                draw = g.checkStalemate(true);
-                if (draw) {
-                    //This is where the game would end
-                }
-            }
-
+        switch (winner) {
+    	case 0:
+    		System.out.println("It's a tie!");
+    		break;
+    	case 1:
+    		System.out.println("White Wins!");
+    		break;
+    	case 2:
+    		System.out.println("Black Wins!");
+    		break;
         }
+       
     }
 
     public static String[][] setBoard(String[][] board){
