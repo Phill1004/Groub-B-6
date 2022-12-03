@@ -6,7 +6,7 @@ public class Main {
         gameStatus game = new gameStatus();
 
         System.out.println("Welcome to JAVA CHESS");
-        
+
         //Creates the 2d array game board
         String[][] board = new String[8][8];
         boolean gameOver = false;
@@ -20,16 +20,15 @@ public class Main {
         // TESTING FOR TWO CLOCKS - Nicholas
         // This clock will run while the program runs even if there is no more output
         // Once the clock ends it will print a msg. We can use player#.timerEnded boolean to check if the timer ended
-        int minutes = 15; // can change the amount of time if needed
         clock white = new clock(); // create player 1 and 2's clock
         clock black = new clock();
         white.name = "White"; // set names. This can be removed later but for now shows who's timer ended when printing
         black.name = "Black";
-        System.out.println(minutes + " minute game has begun");
         displayBoard(board);
 
-       int winner = 0;
-        
+        int winner = 0;
+        int checkTimer = 0;
+
         String turn = "0";
         int turnCount = 0;
         System.out.println("White Start");
@@ -64,32 +63,33 @@ public class Main {
                     black.timeLeft(black.elapsedTime); // start timer and print time left for the player
                     break;
             }
+
             System.out.println("It's "+Name+"'s turn "); // prints out the whose turn it is
-            
+
             System.out.println("What would you like to do? 1-Play 2-Request Draw 3-Forfeit");
-        	String choice = keyboard.next();
-        	
-        	if (choice.equals("2")) {
-        		gameOver = game.checkDraw(turnCount%2==0, keyboard);
-        		if (gameOver) {
-        			winner = 0;
-        			break;
-        		}
-        		continue;
-        	}
-        	else if (choice.equals("3")) {
-        		gameOver = true;
-        		if(turnCount%2 == 0)
-        			winner = 2;
-        		else
-        			winner = 1;
-        		
-        		break;
-        	}
-        	else if (!choice.equals("1")) {
-        		continue;
-        	}
-            
+            String choice = keyboard.next();
+
+            if (choice.equals("2")) {
+                gameOver = game.checkDraw(turnCount%2==0, keyboard);
+                if (gameOver) {
+                    winner = 0;
+                    break;
+                }
+                continue;
+            }
+            else if (choice.equals("3")) {
+                gameOver = true;
+                if(turnCount%2 == 0)
+                    winner = 2;
+                else
+                    winner = 1;
+
+                break;
+            }
+            else if (!choice.equals("1")) {
+                continue;
+            }
+
             System.out.println("Enter piece to move column :: ");
             String column = keyboard.next();
             switch(column.charAt(0)) { // switch case to take letter input and change it to number input for backend
@@ -169,21 +169,32 @@ public class Main {
             gameOver = game.checkWin(board, 0);
             displayBoard(board);
 
+            // check to see if time has run out
+            if(white.timeOut == true){
+                winner = 2;
+                System.out.println(white.name +"'s time has run out!");
+                break;
+            }
+            else if(black.timeOut == true){
+                System.out.println(black.name +"'s time has run out!");
+                winner = 1;
+                break;
+            }
         }
 
         System.out.println("Game Over!");
         switch (winner) {
-    	case 0:
-    		System.out.println("It's a tie!");
-    		break;
-    	case 1:
-    		System.out.println("White Wins!");
-    		break;
-    	case 2:
-    		System.out.println("Black Wins!");
-    		break;
+            case 0:
+                System.out.println("It's a tie!");
+                break;
+            case 1:
+                System.out.println("White Wins!");
+                break;
+            case 2:
+                System.out.println("Black Wins!");
+                break;
         }
-       
+
     }
 
     public static String[][] setBoard(String[][] board){
