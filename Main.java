@@ -189,8 +189,14 @@ public class Main {
             else {
                 System.out.println("Move is InValid");
             }
-            gameOver = game.checkWin(board, 0);
+            //black = 1, white = 0;
+            gameOver = game.checkWin(board, (turnCount + 1) % 2);
+            if(gameOver == true){
+                winner = (turnCount + 1) % 2;
+                winner++;
+            }
             displayBoard(board);
+            System.out.println((turnCount + 1) % 2);
 
             // check to see if time has run out
             if(white.timeOut == true){
