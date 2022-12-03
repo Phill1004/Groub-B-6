@@ -4,18 +4,18 @@ import java.util.TimerTask;
 public class clock {
     Timer t;
     int minutes = 15;
-    boolean turn = false;
-    String name = "";
     int elapsedTime = 0;
+    boolean turn = false;
+    boolean timeOut = false;
+    String name = "";
 
     // create the new timer and schedule the timer to run for 15 minutes
     public void runTimer(int elapsedTime) {
         if(elapsedTime == (minutes * 60))
-            System.out.println(name +"'s time has run out!");
+            timeOut = true;
 
         // if it is the player's turn then run a 1 second timer
-        if(turn = true)
-        {
+        if(turn = true) {
             t = new Timer();
             t.schedule(new rt(), 1000); // convert to milliseconds
         }
@@ -31,8 +31,7 @@ public class clock {
         }
     }
 
-    public void timeLeft(int time)
-    {
+    public void timeLeft(int time) {
         int min;
         int sec;
 
@@ -46,5 +45,4 @@ public class clock {
         else
             System.out.println(name + "'s Time left is " + min + ":" + sec);
     }
-
 }
