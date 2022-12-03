@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class chessController {
 	
 	String[][] board;
@@ -17,6 +19,7 @@ public class chessController {
     	if(theUserColor.equals("White"))
     		OtherColor = "Black";
     	
+    	System.out.println(OtherColor);
     	
     	
     	//If the input or output row and column are out of bounds then return false
@@ -43,6 +46,8 @@ public class chessController {
     	System.out.println(FromPieceName +" From " + FromColumn + " " + FromRow);
     	System.out.println("       To " + ToColumn + " " + ToRow + " "+ ToPieceName);
     	
+    	boolean taking = false;
+    	
     	//System.out.println(FromRow - ToRow);
     	switch(FromPieceName) { // switch case to check movement based on piece name
     	case "BPawn": // CASE FOR BLACK PAWN MOVING
@@ -50,7 +55,15 @@ public class chessController {
     		if(FromRow == 2) {
     			MoveDistance = 2;
     		}
-    		if(ToColumn > FromColumn || ToColumn < FromColumn) { // checks to see if the pawn is switching columns
+    		if(ToRow - FromRow == 1 && Math.abs(FromColumn - ToColumn) == 1) {//black pawn trying to capture
+    			if(ToPieceName.charAt(0) == OtherColor.charAt(0)) {
+    				taking = true;
+    			}
+    		}
+    		if(taking) {
+    			taking = false;
+    			return true;
+    		}else if(ToColumn > FromColumn || ToColumn < FromColumn) { // checks to see if the pawn is switching columns
     			return false;
     		}else if(ToRow < FromRow) { // checks to see if the pawn is moving backwards (Black side)
     			return false;
@@ -63,6 +76,15 @@ public class chessController {
     		MoveDistance = 1; // move distance of pawn
     		if(FromRow == 7) {
     			MoveDistance = 2;
+    		}
+    		if(FromRow - ToRow == 1 && Math.abs(FromColumn - ToColumn) == 1) {//white pawn trying to capture
+    			if(ToPieceName.charAt(0) == OtherColor.charAt(0)) {
+    				taking = true;
+    			}
+    		}
+    		if(taking) {
+    			taking = false;
+    			return true;
     		}
     		if(ToColumn > FromColumn || ToColumn < FromColumn) { // checks to see if the pawn is switching columns
     			return false;
@@ -99,13 +121,16 @@ public class chessController {
         return false;
     }
     // METHOD FOR VALIDATING A ROOKS MOVE
-    public Boolean RookValidMove(String[][] theGameBoard,int FromColumn, int FromRow, int ToColumn, int ToRow) { 
+    public Boolean RookValidMove(String[][] theGameBoard,int FromColumn, int FromRow, int ToColumn, int ToRow) {
+    	ArrayList<String> path = new ArrayList<String>();
+    	path.clear();
     	if(ToRow != FromRow && ToColumn != FromColumn) { // check to see if the rook is trying to move on both row and column
 			return false;
 		}
 		if(ToRow != FromRow) { // check if rook is moving left on rows
 			if(FromRow < ToRow) { // ROOK INCREASING ROW
-				for(int i = FromRow+1; i < ToRow+1; i++) { //loop through and check if any pieces are in the way of rooks path 
+				for(int i = FromRow+1; i < ToRow+1; i++) { //loop through and check if any pieces are in the way of rooks path
+					path.add(theGameBoard[i-1][FromColumn-1]);
 					System.out.println(theGameBoard[i-1][FromColumn-1] + " Is at " +FromColumn + " " +i);
 					if(theGameBoard[i-1][FromColumn-1] != "") {
 						System.out.println(theGameBoard[FromRow-1][i-1] + " Is in the way at " + i + " " + FromRow);
@@ -114,6 +139,7 @@ public class chessController {
 				}	
     		}else { // ROOK DECREASING ROW
     			for(int i = FromRow-1; i > ToRow-1; i--) { //loop through and check if any pieces are in the way of rooks path 
+    				path.add(theGameBoard[i-1][FromColumn-1]);
 					System.out.println(theGameBoard[i-1][FromColumn-1] + " Is at " +FromColumn + " " +i);
 					if(theGameBoard[i-1][FromColumn-1] != "" ) {
 						System.out.println(theGameBoard[FromRow-1][i-1] + " Is in the way at " + i + " " + FromRow);
@@ -121,7 +147,6 @@ public class chessController {
 					}
 				}
     		}
-			
 			return true;
 		}
 		else if(ToColumn != FromColumn) { // checks for pieces if rook is moving right
