@@ -100,9 +100,9 @@ public class chessController {
     	case "WRook":
     		return RookValidMove(theGameBoard, FromColumn, FromRow, ToColumn, ToRow, theUserColor, OtherColor);
     	case "BKnight":
-    		return KnightValidMove(theGameBoard, FromColumn, FromRow, ToColumn, ToRow);
+    		return KnightValidMove(theGameBoard, FromColumn, FromRow, ToColumn, ToRow, theUserColor, OtherColor);
     	case "WKnight":
-    		return KnightValidMove(theGameBoard, FromColumn, FromRow, ToColumn, ToRow);
+    		return KnightValidMove(theGameBoard, FromColumn, FromRow, ToColumn, ToRow, theUserColor, OtherColor);
     	case "BBishop":
     		return BishopValidMove(theGameBoard, FromColumn, FromRow, ToColumn, ToRow, theUserColor, OtherColor);
     	case "WBishop":
@@ -292,8 +292,26 @@ public class chessController {
     		return false;
     }
     // METHOD FOR VALIDATING A KNIGHTS MOVE
-    public boolean KnightValidMove(String[][] theGameBoard,int FromColumn, int FromRow, int ToColumn, int ToRow) {
-    	System.out.println("Not Done Yet");// knights can move two spaces around them + 1 space up or down in an L shape
-    	return false;
+    public boolean KnightValidMove(String[][] theGameBoard,int FromColumn, int FromRow, int ToColumn, int ToRow, String UserColor, String OtherColor) {
+    	//System.out.println("Not Done Yet");// knights can move two spaces around them + 1 space up or down in an L shape
+    	if(Math.abs(ToRow-FromRow) > 2 || Math.abs(ToColumn - FromColumn) > 2) {
+    		return false;
+    	}else if(Math.abs(ToRow - FromRow) == 2 && Math.abs(FromColumn-ToColumn) == 1) { // check for t shape up and down
+    		//System.out.println(theGameBoard[ToRow-1][ToColumn-1]);
+    		if(theGameBoard[ToRow-1][ToColumn-1].equals("")) {
+    			return true;
+    		}else if(theGameBoard[ToRow-1][ToColumn-1].charAt(0) == OtherColor.charAt(0)) // trying to take other color piece
+    			return true;
+    		else if(theGameBoard[ToRow-1][ToColumn-1].charAt(0) == UserColor.charAt(0)) // trying to take same color piece
+    			return false;
+    	}else if(Math.abs(ToRow - FromRow) == 1 && Math.abs(FromColumn-ToColumn) == 2) { // check for t shape left and right
+    		if(theGameBoard[ToRow-1][ToColumn-1].equals("")) {
+    			return true;
+    		}else if(theGameBoard[ToRow-1][ToColumn-1].charAt(0) == OtherColor.charAt(0)) // trying to take other color piece
+    			return true;
+    		else if(theGameBoard[ToRow-1][ToColumn-1].charAt(0) == UserColor.charAt(0)) // trying to take same color piece
+    			return false;
+    	}
+    	return true;
     }
 }
