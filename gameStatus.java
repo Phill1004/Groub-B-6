@@ -5,9 +5,13 @@ public class gameStatus {
     boolean checkWin(String[][] theBoard, int whichUser){
         //assume player is white, will work on if player is black later
         String userColor = "W", otherUserColor = "B";
-        if(whichUser == 2){
+        if(whichUser == 1){
             userColor = "B";
             otherUserColor = "W";
+        }
+        else if(whichUser == 0){
+            userColor = "W";
+            otherUserColor = "B";
         }
         boolean hasCheck = false;
         int kingRow = 0, kingCol = 0, rook1Row = 99, rook1Col = 99, rook2Row = 99, rook2Col = 99;
