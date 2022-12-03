@@ -4,9 +4,33 @@ public class Main {
     public static void main(String[] args) {
 
         gameStatus game = new gameStatus();
+        Scanner keyboard = new Scanner(System.in); // creates new scanner
 
         System.out.println("Welcome to JAVA CHESS");
+        System.out.println("What would you like to do? 1-New Game 2-Rules 3-Quit");
+        String mainMenu = keyboard.next();
 
+        if (mainMenu.equals("2")) {
+        	System.out.println("To play, each player must take turns inputting their moves in the keyboard.\n"
+					+ "On your turn you will have the option to play, request a draw, or forfeit.\n"
+					+ "If you choose to play you must select the coordinates of the peice you wish to move\n"
+					+ "Then you must select coordinates of the destination. You will do this by typing and entering the\n"
+					+ "letter corresponding to your chosen column, then the number corresponding to your chosen row\n"
+					+ "If your move is valid, the process repeats for each player until the game is over\n"
+					+ "The game is won if your opponent forfeits or if you take the opposing king.\n");
+        	 System.out.println("Press enter key to continue to new game...");
+             keyboard.nextLine();
+             keyboard.nextLine();
+        }
+        else if (mainMenu.equals("3")) {
+        	System.exit(0);
+        }
+        
+        else if (!mainMenu.equals("1")) {
+        	System.out.println("Invalid response. Resetting game.");
+            main(args);
+        }
+        
         //Creates the 2d array game board
         String[][] board = new String[8][8];
         boolean gameOver = false;
@@ -14,7 +38,6 @@ public class Main {
 
         //TESTING FOR THE VALID MOVE FUNCTION - Nathan
         chessController CContr = new chessController(board); // makes he chessController object and passes the board
-        Scanner keyboard = new Scanner(System.in); // creates new scanner
         int X= 0, Y = 0, X2 = 0, Y2 = 0; // creates variables for user input
 
         // TESTING FOR TWO CLOCKS - Nicholas
@@ -194,6 +217,12 @@ public class Main {
                 System.out.println("Black Wins!");
                 break;
         }
+        
+        System.out.println("Press enter key to reset...");
+        keyboard.nextLine();
+        keyboard.nextLine();
+        keyboard.reset();
+        main(args);
 
     }
 
