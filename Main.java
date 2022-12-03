@@ -28,9 +28,9 @@ public class Main {
         player1.countDownTimer(); // start player 1 and 2's clock
         player2.countDownTimer();
         System.out.println(minutes + " minute timer has begun");
-
+        displayBoard(board);
         while(gameOver == false){
-            displayBoard(board);
+
             System.out.println("Enter piece to move column :: ");
             String column = keyboard.next();
             switch(column.charAt(0)) { // switch case to take letter input and change it to number input for backend
@@ -106,10 +106,12 @@ public class Main {
             else {
                 System.out.println("Move is InValid");
             }
+            gameOver = game.checkWin(board, 2);
+            displayBoard(board);
 
-            gameOver = game.checkWin(board, 0);
 
         }
+
         System.out.println("Game Over!");
 
         //draw use case test (assumes it's p1's turn)
@@ -197,11 +199,8 @@ public class Main {
         y -= 1;
         x2 -= 1;
         y2 -= 1;
-        System.out.println(board[y][x] + "BEfore");
         board[y2][x2] = board[y][x];
-        System.out.println(board[y2][x2] + "AFTER");
         board[y][x] = "";
-        System.out.println(board[y][x] + "LAST");
         return board;
     }
 }
