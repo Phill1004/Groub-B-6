@@ -4,9 +4,10 @@ public class gameStatus {
 
     boolean checkWin(String[][] theBoard, int whichUser){
         //assume player is white, will work on if player is black later
-        String userColor = "W";
+        String userColor = "W", otherUserColor = "B";
         if(whichUser == 2){
             userColor = "B";
+            otherUserColor = "W";
         }
         boolean hasCheck = false;
         int kingRow = 0, kingCol = 0, rook1Row = 99, rook1Col = 99, rook2Row = 99, rook2Col = 99;
@@ -18,7 +19,7 @@ public class gameStatus {
         //Locates the other players king
         for(int row = 0; row < 8; row++){
             for(int col = 0; col < 8; col++){
-                if(theBoard[row][col].equals("BKing")){
+                if(theBoard[row][col].equals(otherUserColor + "King")){
                     kingRow = row;
                     kingCol = col;
                 }
@@ -27,12 +28,12 @@ public class gameStatus {
         //locates the players rooks
         for(int row = 0; row < 8; row++){
             for(int col = 0; col < 8; col++){
-                if(theBoard[row][col].equals("WRook") && counter == 0){
+                if(theBoard[row][col].equals(userColor + "Rook") && counter == 0){
                     rook1Row = row;
                     rook1Col = col;
                     counter++;
                 }
-                else if(theBoard[row][col].equals("WRook")){
+                else if(theBoard[row][col].equals(userColor + "Rook")){
                     rook2Row = row;
                     rook2Col = col;
                 }
@@ -42,12 +43,12 @@ public class gameStatus {
         //locates the players bishops
         for(int row = 0; row < 8; row++){
             for(int col = 0; col < 8; col++){
-                if(theBoard[row][col].equals("WBishop") && counter == 0){
+                if(theBoard[row][col].equals(userColor + "Bishop") && counter == 0){
                     bishop1Row = row;
                     bishop1Col = col;
                     counter++;
                 }
-                else if(theBoard[row][col].equals("WBishop")){
+                else if(theBoard[row][col].equals(userColor + "Bishop")){
                     bishop2Row = row;
                     bishop2Col = col;
                 }
@@ -57,12 +58,12 @@ public class gameStatus {
         //locates the players knights
         for(int row = 0; row < 8; row++){
             for(int col = 0; col < 8; col++){
-                if(theBoard[row][col].equals("WKnight") && counter == 0){
+                if(theBoard[row][col].equals(userColor + "Knight") && counter == 0){
                     knight1Row = row;
                     knight1Col = col;
                     counter++;
                 }
-                else if(theBoard[row][col].equals("WKnight")){
+                else if(theBoard[row][col].equals(userColor + "Knight")){
                     knight2Row = row;
                     knight2Col = col;
                 }
@@ -71,7 +72,7 @@ public class gameStatus {
         //locates the players queen
         for(int row = 0; row < 8; row++){
             for(int col = 0; col < 8; col++){
-                if(theBoard[row][col].equals("WQueen")){
+                if(theBoard[row][col].equals(userColor + "Queen")){
                     queenRow = row;
                     queenCol = col;
                 }
@@ -81,20 +82,20 @@ public class gameStatus {
         //checks if pawns have a check
         if(kingRow != 7){
             if(kingCol == 0){
-                if(theBoard[kingRow + 1][kingCol + 1].equals("WPawn")){
+                if(theBoard[kingRow + 1][kingCol + 1].equals(userColor + "Pawn")){
                     hasCheck = true;
                 }
             }
             else if(kingCol == 7){
-                if(theBoard[kingRow + 1][kingCol - 1].equals("WPawn")){
+                if(theBoard[kingRow + 1][kingCol - 1].equals(userColor + "Pawn")){
                     hasCheck = true;
                 }
             }
             else{
-                if(theBoard[kingRow + 1][kingCol - 1].equals("WPawn")){
+                if(theBoard[kingRow + 1][kingCol - 1].equals(userColor + "Pawn")){
                     hasCheck = true;
                 }
-                else if(theBoard[kingRow + 1][kingCol + 1].equals("WPawn")){
+                else if(theBoard[kingRow + 1][kingCol + 1].equals(userColor + "Pawn")){
                     hasCheck = true;
                 }
             }
@@ -372,32 +373,32 @@ public class gameStatus {
         if(bishop1Row != 99){
             //checking bottom right diagonal for king
             for(int row = bishop1Row + 1, col = bishop1Col + 1; row < 8 && col < 8; row++, col++){
-                if(theBoard[row][col].equals("BKing")){
+                if(theBoard[row][col].equals(otherUserColor + "King")){
                     kingInDiagonal = "BR";
                 }
             }
             //checking bottom left diagonal for king
             for(int row = bishop1Row + 1, col = bishop1Col - 1; row < 8 && col >= 0; row++, col--){
-                if(theBoard[row][col].equals("BKing")){
+                if(theBoard[row][col].equals(otherUserColor + "King")){
                     kingInDiagonal = "BL";
                 }
             }
             //checking top left diagonal for king
             for(int row = bishop1Row - 1, col = bishop1Col - 1; row >= 0 && col >= 0; row--, col--){
-                if(theBoard[row][col].equals("BKing")){
+                if(theBoard[row][col].equals(otherUserColor + "King")){
                     kingInDiagonal = "TL";
                 }
             }
             //checking top right diagonal
             for(int row = bishop1Row - 1, col = bishop1Col + 1; row >= 0 && col < 8; row--, col++){
-                if(theBoard[row][col].equals("BKing")){
+                if(theBoard[row][col].equals(otherUserColor + "King")){
                     kingInDiagonal = "TR";
                 }
             }
             //if king is found to be in diagonal. this checks if bishop has a check on it
             if(!kingInDiagonal.equals("")){
                 if(kingInDiagonal.equals("TL")){
-                    if(theBoard[bishop1Row - 1][bishop1Col - 1].equals("BKing")){
+                    if(theBoard[bishop1Row - 1][bishop1Col - 1].equals(otherUserColor + "King")){
                         hasCheck = true;                    }
                     else{
                         for(int row = bishop1Row - 1, col = bishop1Col - 1; row > kingRow && col > kingCol; row--, col--){
@@ -412,7 +413,7 @@ public class gameStatus {
 
                 }
                 else if(kingInDiagonal.equals("TR")){
-                    if(theBoard[bishop1Row - 1][bishop1Col + 1].equals("BKing")){
+                    if(theBoard[bishop1Row - 1][bishop1Col + 1].equals(otherUserColor + "King")){
                         hasCheck = true;                    }
                     else{
                         for(int row = bishop1Row - 1, col = bishop1Col + 1; row > kingRow && col < kingCol; row--, col++){
@@ -428,7 +429,7 @@ public class gameStatus {
                     }
                 }
                 else if(kingInDiagonal.equals("BL")){
-                    if(theBoard[bishop1Row + 1][bishop1Col - 1].equals("BKing")){
+                    if(theBoard[bishop1Row + 1][bishop1Col - 1].equals(otherUserColor + "King")){
                         hasCheck = true;                    }
                     else{
                         for(int row = bishop1Row + 1, col = bishop1Col - 1; row < kingRow && col > kingCol; row++, col--){
@@ -443,7 +444,7 @@ public class gameStatus {
                 }
                 //king must be in BR diagonal of bishop
                 else{
-                    if(theBoard[bishop1Row + 1][bishop1Col + 1].equals("BKing")){
+                    if(theBoard[bishop1Row + 1][bishop1Col + 1].equals(otherUserColor + "King")){
                         hasCheck = true;                    }
                     else{
                         for(int row = bishop1Row + 1, col = bishop1Col + 1; row < kingRow && col < kingCol; row++, col++){
@@ -464,32 +465,32 @@ public class gameStatus {
         if(bishop2Row != 99){
             //checking bottom right diagonal for king
             for(int row = bishop2Row + 1, col = bishop2Col + 1; row < 8 && col < 8; row++, col++){
-                if(theBoard[row][col].equals("BKing")){
+                if(theBoard[row][col].equals(otherUserColor + "King")){
                     kingInDiagonal = "BR";
                 }
             }
             //checking bottom left diagonal for king
             for(int row = bishop2Row + 1, col = bishop2Col - 1; row < 8 && col >= 0; row++, col--){
-                if(theBoard[row][col].equals("BKing")){
+                if(theBoard[row][col].equals(otherUserColor + "King")){
                     kingInDiagonal = "BL";
                 }
             }
             //checking top left diagonal for king
             for(int row = bishop2Row - 1, col = bishop2Col - 1; row >= 0 && col >= 0; row--, col--){
-                if(theBoard[row][col].equals("BKing")){
+                if(theBoard[row][col].equals(otherUserColor + "King")){
                     kingInDiagonal = "TL";
                 }
             }
             //checking top right diagonal
             for(int row = bishop2Row - 1, col = bishop2Col + 1; row >= 0 && col < 8; row--, col++){
-                if(theBoard[row][col].equals("BKing")){
+                if(theBoard[row][col].equals(otherUserColor + "King")){
                     kingInDiagonal = "TR";
                 }
             }
             //if king is found to be in diagonal. this checks if bishop has a check on it
             if(!kingInDiagonal.equals("")){
                 if(kingInDiagonal.equals("TL")){
-                    if(theBoard[bishop2Row - 1][bishop2Col - 1].equals("BKing")){
+                    if(theBoard[bishop2Row - 1][bishop2Col - 1].equals(otherUserColor + "King")){
                         hasCheck = true;                    }
                     else{
                         for(int row = bishop2Row - 1, col = bishop2Col - 1; row > kingRow && col > kingCol; row--, col--){
@@ -503,7 +504,7 @@ public class gameStatus {
                     }
                 }
                 else if(kingInDiagonal.equals("TR")){
-                    if(theBoard[bishop2Row - 1][bishop2Col + 1].equals("BKing")){
+                    if(theBoard[bishop2Row - 1][bishop2Col + 1].equals(otherUserColor + "King")){
                         hasCheck = true;                    }
                     else{
                         for(int row = bishop2Row - 1, col = bishop2Col + 1; row > kingRow && col < kingCol; row--, col++){
@@ -517,7 +518,7 @@ public class gameStatus {
                     }
                 }
                 else if(kingInDiagonal.equals("BL")){
-                    if(theBoard[bishop2Row + 1][bishop2Col - 1].equals("BKing")){
+                    if(theBoard[bishop2Row + 1][bishop2Col - 1].equals(otherUserColor + "King")){
                         hasCheck = true;                    }
                     else{
                         for(int row = bishop2Row + 1, col = bishop2Col - 1; row < kingRow && col > kingCol; row++, col--){
@@ -532,7 +533,7 @@ public class gameStatus {
                 }
                 //king must be in BR diagonal of bishop
                 else{
-                    if(theBoard[bishop2Row + 1][bishop2Col + 1].equals("BKing")){
+                    if(theBoard[bishop2Row + 1][bishop2Col + 1].equals(otherUserColor + "King")){
                         hasCheck = true;                    }
                     else{
                         for(int row = bishop2Row + 1, col = bishop2Col + 1; row < kingRow && col < kingCol; row++, col++){
@@ -692,32 +693,32 @@ public class gameStatus {
             else{
                 //checking for bottom right diagonal for king
                 for(int row = queenRow + 1, col = queenCol + 1; row < 8 && col < 8; row++, col++){
-                    if(theBoard[row][col].equals("BKing")){
+                    if(theBoard[row][col].equals(otherUserColor + "King")){
                         kingInDiagonal = "BR";
                     }
                 }
                 //checking bottom left diagonal for king
                 for(int row = queenRow + 1, col = queenCol - 1; row < 8 && col >= 0; row++, col--){
-                    if(theBoard[row][col].equals("BKing")){
+                    if(theBoard[row][col].equals(otherUserColor + "King")){
                         kingInDiagonal = "BL";
                     }
                 }
                 //checking top left diagonal for king
                 for(int row = queenRow - 1, col = queenCol - 1; row >= 0 && col >= 0; row--, col--){
-                    if(theBoard[row][col].equals("BKing")){
+                    if(theBoard[row][col].equals(otherUserColor + "King")){
                         kingInDiagonal = "TL";
                     }
                 }
                 //checking top right diagonal
                 for(int row = queenRow - 1, col = queenCol + 1; row >= 0 && col < 8; row--, col++){
-                    if(theBoard[row][col].equals("BKing")){
+                    if(theBoard[row][col].equals(otherUserColor + "King")){
                         kingInDiagonal = "TR";
                     }
                 }
                 //if king is found to be in diagonal. this checks if bishop has a check on it
                 if(!kingInDiagonal.equals("")){
                     if(kingInDiagonal.equals("TL")){
-                        if(theBoard[queenRow - 1][queenCol - 1].equals("BKing")){
+                        if(theBoard[queenRow - 1][queenCol - 1].equals(otherUserColor + "King")){
                             hasCheck = true;                    }
                         else{
                             for(int row = queenRow - 1, col = queenCol - 1; row > kingRow && col > kingCol; row--, col--){
@@ -731,7 +732,7 @@ public class gameStatus {
                         }
                     }
                     else if(kingInDiagonal.equals("TR")){
-                        if(theBoard[queenRow - 1][queenCol + 1].equals("BKing")){
+                        if(theBoard[queenRow - 1][queenCol + 1].equals(otherUserColor + "King")){
                             hasCheck = true;                    }
                         else{
                             for(int row = queenRow - 1, col = queenCol + 1; row > kingRow && col < kingCol; row--, col++){
@@ -747,7 +748,7 @@ public class gameStatus {
                         }
                     }
                     else if(kingInDiagonal.equals("BL")){
-                        if(theBoard[queenRow + 1][queenCol - 1].equals("BKing")){
+                        if(theBoard[queenRow + 1][queenCol - 1].equals(otherUserColor + "King")){
                             hasCheck = true;                    }
                         else{
                             for(int row = queenRow + 1, col = queenCol - 1; row < kingRow && col > kingCol; row++, col--){
@@ -762,7 +763,7 @@ public class gameStatus {
                     }
                     //king must be in BR diagonal of bishop
                     else{
-                        if(theBoard[queenRow + 1][queenCol + 1].equals("BKing")){
+                        if(theBoard[queenRow + 1][queenCol + 1].equals(otherUserColor + "King")){
                             hasCheck = true;                    }
                         else{
                             for(int row = queenRow + 1, col = queenCol + 1; row < kingRow && col < kingCol; row++, col++){
