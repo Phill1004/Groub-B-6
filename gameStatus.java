@@ -862,21 +862,20 @@ public class gameStatus {
     }
 
     //method is called when request draw button is clicked
-    boolean checkDraw(gameBoard theBoard, boolean isPlayer1){
+    boolean checkDraw(Boolean isPlayer1, Scanner keyboard){
         //Initialize input variables
         String yesOrNo;
         boolean draw = false;
         boolean playerOnesTurn = isPlayer1;
-        Scanner keyboard = new Scanner(System.in);
 
         //prompt responding player for draw (IDE console serves the purpose of the accept draw button)
         if (playerOnesTurn) {
-            System.out.print("P2, do you accept the draw?(Y/N): ");
+            System.out.print("Black, do you accept the draw?(Y/N): ");
         }
         else {
-            System.out.print("P1, do you accept the draw?(Y/N): ");
+            System.out.print("White, do you accept the draw?(Y/N): ");
         }
-        yesOrNo = keyboard.nextLine();
+        yesOrNo = keyboard.next();
         if (yesOrNo.equals("Y")||yesOrNo.equals("y")) {
             draw = true;
         }
@@ -885,7 +884,6 @@ public class gameStatus {
             System.out.println("The game ends in a draw");
         }
 
-        keyboard.close();
         return draw;
     }
 
